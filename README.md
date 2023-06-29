@@ -22,5 +22,5 @@
 * Store in redis
 * Semantic search redis for "Fairness Goals"
 * Ask the question "What are the Fairness Goals?"
-* Call HuggingFace Summarization Service to summarize the answer from the searching results.
+* Call HuggingFace Summarization Service using the vblagoje/bart_lfqa model to summarize the answer from the searching results.
 * optionally, you can compare with OpenAI's "gpt-3.5-turbo" OpenAI API Key is required.
