@@ -19,8 +19,8 @@ public static class Program {
 
         IKernel kernel = new KernelBuilder()
             .WithLogger(ConsoleLogger.Log)
-            //.WithOpenAIChatCompletionService("gpt-3.5-turbo", Env.Var("OpenAIKey")) //for comparison if you want
-            .WithHuggingFaceTextCompletionService("vblagoje/bart_lfqa", endpoint: "http://localhost:5000/summarization")
+            .WithOpenAIChatCompletionService("gpt-3.5-turbo", Env.Var("OpenAIKey")) //for comparison if you want
+            //.WithHuggingFaceTextCompletionService("vblagoje/bart_lfqa", endpoint: "http://localhost:5000/summarization")
             .WithHuggingFaceTextEmbeddingGenerationService("intfloat/e5-large-v2", endpoint: "http://localhost:5000/embeddings", null, false)
             .WithMemoryStorage(memoryStore)
             .Build();
@@ -28,7 +28,7 @@ public static class Program {
         // Add Memory as a skill for other functions
         kernel.ImportSkill(new TextMemorySkill());
 
-        //await memoryStore.DeleteCollectionAsync("global-documents-bart").ConfigureAwait(false);
+        //await memoryStore.DeleteCollectionAsync("global-documents-e5").ConfigureAwait(false);
         Console.WriteLine("== Printing Collections in DB ==");
         bool found = false;
         int count = 1;
