@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using Microsoft.SemanticKernel;
+﻿using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.AI.TextCompletion;
 using HF = Microsoft.SemanticKernel.Connectors.AI.HuggingFace;
 using Microsoft.SemanticKernel.Memory;
 using Microsoft.SemanticKernel.Connectors.Memory.Redis;
 using Microsoft.SemanticKernel.CoreSkills;
 using Microsoft.SemanticKernel.TemplateEngine;
-using System.IO;
 using UglyToad.PdfPig.DocumentLayoutAnalysis.TextExtractor;
 using UglyToad.PdfPig;
 using Microsoft.SemanticKernel.Text;
@@ -17,17 +12,15 @@ using StackExchange.Redis;
 
 public static class Program {
     public static async Task Main() {
-        var targetCollectionName = "global-documents-e5";
-        using ConnectionMultiplexer connectionMultiplexer = await ConnectionMultiplexer.ConnectAsync("localhost:6379");
+        var targetCollectionName = "global-documents-e5-large";
+        using ConnectionMultiplexer connectionMultiplexer = await ConnectionMultiplexer.ConnectAsync("localhost:6379").ConfigureAwait(false);
         IDatabase database = connectionMultiplexer.GetDatabase();
         RedisMemoryStore memoryStore = new RedisMemoryStore(database, vectorSize: 1024);// 768, 384);// 1536);
 
         IKernel kernel = new KernelBuilder()
             .WithLogger(ConsoleLogger.Log)
-            //.WithOpenAIChatCompletionService("gpt-3.5-turbo", Env.Var("OpenAIKey"))
+            //.WithOpenAIChatCompletionService("gpt-3.5-turbo", Env.Var("OpenAIKey")) //for comparison if you want
             .WithHuggingFaceTextCompletionService("vblagoje/bart_lfqa", endpoint: "http://localhost:5000/summarization")
-            //.WithHuggingFaceTextEmbeddingGenerationService("sentence-transformers/all-MiniLM-L6-v2", endpoint: "http://localhost:5000/embeddings", null, false)
-            //.WithHuggingFaceTextCompletionService("intfloat/e5-large-v2", endpoint: "http://localhost:5000/summarization")
             .WithHuggingFaceTextEmbeddingGenerationService("intfloat/e5-large-v2", endpoint: "http://localhost:5000/embeddings", null, false)
             .WithMemoryStorage(memoryStore)
             .Build();
@@ -35,7 +28,7 @@ public static class Program {
         // Add Memory as a skill for other functions
         kernel.ImportSkill(new TextMemorySkill());
 
-        //await memoryStore.DeleteCollectionAsync("global-documents-bart");
+        //await memoryStore.DeleteCollectionAsync("global-documents-bart").ConfigureAwait(false);
         Console.WriteLine("== Printing Collections in DB ==");
         bool found = false;
         int count = 1;
@@ -44,14 +37,6 @@ public static class Program {
             Console.WriteLine($"{count} - {collection}");
             if (collection == targetCollectionName) { 
                 found = true;
-
-                //var memory3 = await memoryStore.GetAsync(collection, $"{collection}-5");
-                //Console.WriteLine(memory3 != null ? memory3.Metadata.Text : "ERROR: memory not found");
-                //var searchResults = kernel.Memory.SearchAsync(collection, "AI",
-                //    limit: 3, minRelevanceScore: 0.3);
-                //await foreach (var item in searchResults) {
-                //    Console.WriteLine(item.Metadata.Text + " : " + item.Relevance);
-                //}
             }
         }
 
@@ -69,7 +54,7 @@ public static class Program {
                     collection: targetCollectionName,
                     text: paragraph,
                     id: $"{targetCollectionName}-{i}",
-                    description: $"Document: {documentName}");
+                    description: $"Document: {documentName}").ConfigureAwait(false);
                 Console.Write($".{i}");
             }
             Console.WriteLine("Done");
@@ -77,26 +62,26 @@ public static class Program {
 
         var context = kernel.CreateNewContext();
 
-        const string RecallFunctionDefinition = @"question: what are the {{$input}}? context: {{recall $input}}";
+        const string RecallFunctionDefinition = @"question: From the context, what are the {{$input}}? Context: {{recall $input}}";
         context[TextMemorySkill.CollectionParam] = targetCollectionName;
         context[TextMemorySkill.RelevanceParam] = "0.7";
-        context[TextMemorySkill.LimitParam] = "20";
+        context[TextMemorySkill.LimitParam] = "25";
         context["input"] = "Fairness Goals";
 
         Console.WriteLine("--- Rendered Prompt");
         var promptRenderer = new PromptTemplateEngine();
-        var renderedPrompt = await promptRenderer.RenderAsync(RecallFunctionDefinition, context);
+        var renderedPrompt = await promptRenderer.RenderAsync(RecallFunctionDefinition, context).ConfigureAwait(false);
         Console.WriteLine(renderedPrompt);
 
         var aboutMeOracle = kernel.CreateSemanticFunction(RecallFunctionDefinition,
             maxTokens: 1024, temperature: 0, topP: 0.01);
-        var result = await aboutMeOracle.InvokeAsync(context);
-        //Console.WriteLine($"\nAnswer:{result.ToString().Replace(@"\r\n", " ").Replace(@"\n", " ")}");
+        var result = await aboutMeOracle.InvokeAsync(context).ConfigureAwait(false);
         Console.WriteLine($"\nAnswer:{result}");
     }
+    // for future expansion of embedding text files.
     private static async Task<string> ReadTxtFileAsync(string file) {
         using var streamReader = new StreamReader(File.OpenRead(file));
-        return await streamReader.ReadToEndAsync();
+        return await streamReader.ReadToEndAsync().ConfigureAwait(false);
     }
     private static string ReadPdfFile(string file) {
         var fileContent = string.Empty;

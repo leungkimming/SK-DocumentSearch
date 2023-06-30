@@ -8,6 +8,8 @@
 [Microsoft.SemanticKernelVersion:0.15.230609.2-preview](https://www.nuget.org/packages/Microsoft.SemanticKernel/0.15.230609.2-preview)
 
 ## This example uses below docker images
+* Requires 32G RAM
+* Install Windows Subsystem for Linux
 * Install Docker to Windows Professional
 * [Huggingface http server with summarization - refer to readme](https://github.com/leungkimming/hugging-face-http-server-Summarization)
 * docker run -d --name redis-stack-server -p 6379:6379 redis/redis-stack-server:latest
