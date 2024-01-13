@@ -5,12 +5,6 @@ VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "embeddings", "Embeddings\embeddings.csproj", "{4877170F-C62C-4DDB-A237-5E505BB2725A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Connectors.Memory.Redis", "Connectors\Connectors.Memory.Redis\Connectors.Memory.Redis.csproj", "{A61F431F-48AB-491C-A185-842D7CD85A70}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Connectors.AI.HuggingFace", "Connectors\Connectors.AI.HuggingFace\Connectors.AI.HuggingFace.csproj", "{6A01F086-D07D-46A1-8393-51202882F484}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Connectors", "Connectors", "{9EBFEC82-B97B-45A3-B374-3C917900A7E9}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,21 +15,9 @@ Global
 		{4877170F-C62C-4DDB-A237-5E505BB2725A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4877170F-C62C-4DDB-A237-5E505BB2725A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4877170F-C62C-4DDB-A237-5E505BB2725A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A61F431F-48AB-491C-A185-842D7CD85A70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A61F431F-48AB-491C-A185-842D7CD85A70}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A61F431F-48AB-491C-A185-842D7CD85A70}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A61F431F-48AB-491C-A185-842D7CD85A70}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6A01F086-D07D-46A1-8393-51202882F484}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6A01F086-D07D-46A1-8393-51202882F484}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6A01F086-D07D-46A1-8393-51202882F484}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6A01F086-D07D-46A1-8393-51202882F484}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{A61F431F-48AB-491C-A185-842D7CD85A70} = {9EBFEC82-B97B-45A3-B374-3C917900A7E9}
-		{6A01F086-D07D-46A1-8393-51202882F484} = {9EBFEC82-B97B-45A3-B374-3C917900A7E9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2502006A-59AD-435C-A9B2-4D5E60924C2C}

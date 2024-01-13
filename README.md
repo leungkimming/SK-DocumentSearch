@@ -5,7 +5,7 @@
 * Semantic HuggingFace Summarization Service to obtain the answer from the searching results
 
 ## This example uses below Nuget
-[Microsoft.SemanticKernelVersion:0.15.230609.2-preview](https://www.nuget.org/packages/Microsoft.SemanticKernel/0.15.230609.2-preview)
+[Microsoft.SemanticKernelVersion:1.0.1](https://www.nuget.org/packages/Microsoft.SemanticKernel/)
 
 ## This example uses below docker images
 * Requires 32G RAM
@@ -25,4 +25,4 @@
 * Semantic search redis for "Fairness Goals"
 * Ask the question "What are the Fairness Goals?"
 * Call HuggingFace Summarization Service using the vblagoje/bart_lfqa model to summarize the answer from the searching results.
-* optionally, you can compare with OpenAI's "gpt-3.5-turbo" OpenAI API Key is required.
+* optionally, you can compare with OpenAI's "gpt-3.5-turbo-1106" OpenAI API Key is required.
